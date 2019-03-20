@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 public class MyFirstReceiver extends BroadcastReceiver {
 
+
+    // onrecive kommer att köras när vår broadcastreciver får ett meddelande
     @Override
     public void onReceive(Context context, Intent intent) {
         String name = intent.getStringExtra("name");

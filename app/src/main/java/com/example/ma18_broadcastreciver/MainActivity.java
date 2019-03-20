@@ -11,26 +11,27 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+    // skapa instanser av våra Broadcastreceivers
     BroadcastReceiver br1 = new MyFirstReceiver();
     BroadcastReceiver br2 = new MySecondReceiver();
     BroadcastReceiver br3 = new MyThirdReceiver();
 
     LocalBroadcastManager localBrManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // om vi vill skicka vår broadcasts bara internt i appen så kan vi använda en localBroadcastmanager
         localBrManager = LocalBroadcastManager.getInstance(this);
 
-//        BroadcastReceiver br = new MyFirstReceiver();
-//       // IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-//       // filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-//        IntentFilter filter = new IntentFilter();
-//        filter.addAction("my.custom.action.name");
-//        registerReceiver(br, filter);
+
+
+        // registrera en broadcastreceiver som reagerar varje gång vi ändrar till/från flygplansläge
+//        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+//        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+//        registerReceiver(br1, filter);
 
     }
 
@@ -38,14 +39,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //receiver 1
+       // registrera våra 3 st broadcastrecivers
 
         // IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         // filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
         IntentFilter filter1 = new IntentFilter();
+        // vilket meddelande ska broadcastrecivern reagera på: välj själv my.custom.action.name
         filter1.addAction("my.custom.action.name");
         filter1.setPriority(50);
+
+        // registrera globalt
         //registerReceiver(br1, filter1);
+        //registrera lokalt (bara inuti denna app)
         localBrManager.registerReceiver(br1, filter1);
 
 
@@ -68,9 +73,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        // avregistrera våra broadcastrecivers
+
+        //globalt
 //        unregisterReceiver(br1);
 //        unregisterReceiver(br2);
 //        unregisterReceiver(br3);
+
+        //lokalt
+        localBrManager.unregisterReceiver(br1);
+        localBrManager.unregisterReceiver(br2);
+        localBrManager.unregisterReceiver(br3);
     }
 
 
@@ -80,9 +94,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent("my.custom.action.name");
         intent.putExtra("name", "David");
 
+        // skicka ut broadcast meddelanden
+
+        // andtingen globalt
         //sendBroadcast(intent);
+
+        // globalt i bestämd ordning
        // sendOrderedBroadcast(intent, null);
 
+        // eller lokalt
         localBrManager.sendBroadcast(intent);
 
     }
