@@ -13,6 +13,7 @@ public class MyThirdReceiver extends BroadcastReceiver {
         Log.d("!!!", "Hello from third receiver");
         Toast.makeText(context, "Hello from 3:d", Toast.LENGTH_SHORT).show();
 
+        // låt inga recivrar med lägre prioritet efter denna få någon broadcast
         //abortBroadcast();
 
     }

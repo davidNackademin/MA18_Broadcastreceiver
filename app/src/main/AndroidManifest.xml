@@ -16,6 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Äldre android versioner så räckte det att registrera broadcastrecivers i manifestet speciellt från version 8.0 -->
         <receiver android:name=".MyFirstReceiver">
             <intent-filter>
                 <action android:name="my.custom.action.name"/>
